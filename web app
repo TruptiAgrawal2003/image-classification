@@ -1,0 +1,16 @@
+import tensorflow as tf
+from tensorflow.keras.models import load_model
+import streamlit as st
+import numpy as np
+model=load_model(r"C:\Users\sagar\Downloads\Untitled Folder\image_classification\Image_classify.keras")
+data_cat=['electric bus', 'electric car']
+st.header("Image Classification Model")
+image=st.text_input('Enter Image Name','car.jpeg')
+image_load = tf.keras.preprocessing.image.load_img(image, target_size=(180, 180))
+img_array = tf.keras.preprocessing.image.img_to_array(image_load)
+img_array = tf.expand_dims(img_array, 0)
+predict=model.predict(img_array)
+score=tf.nn.softmax(predict)
+st.image(image)
+st.write("It is image of " +data_cat[np.argmax(score)])
+st.write("With accuracy score of "+str(np.max(score)*100))
